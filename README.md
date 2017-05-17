@@ -178,7 +178,7 @@ In this step, we will fetch the weather data and place it on application state.
 
 * Create a new file in `src` named `apiKey.js`.
 * In `src/apiKey.js` export default your API Key in a string.
-  * You can locate your API Key <a href="https://home.openweathermap.org/api_keys"> here </a>.
+  * You can locate your API Key <a href="https://home.openweathermap.org/api_keys">here</a> after you've signed up and logged in.
 
 Next, open up `src/utils/weatherUtils.js`. This file contains a handful of helper functions for formatting data. Go ahead and import `API_KEY` from `src/apiKey.js`. Create a new variable named `BASE_URL` and set it equal to the string `http://api.openweathermap.org/data/2.5/weather?APPID=${ API_KEY }&units=imperial&`. It's good practice to set up a base URL like this, now we don't have to worry about changing it in a dozen places if the URL ever changes!
 
