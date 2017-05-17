@@ -303,6 +303,7 @@ In this step, we will fetch the weather data from `OpenWeatherMap`'s API and pla
       });
       ```
       </details>
+  * This function should then dispatch our `setWeather` action creator with our newly created promise as the parameter.
 * Open `src/components/EnterLocation/EnterLocation.js`.
 * Import `getWeather` from `src/services/weatherService.js`.
 * Modify the `handleSubmit` method:
@@ -338,6 +339,8 @@ export function getWeather( location ) {
 
     return formattedData;
   });
+
+  store.dispatch( setWeather( weatherPromise ) );
 }
 ```
 
@@ -407,23 +410,26 @@ export default class EnterLocation extends Component {
 
 In this step, we will be displaying all the different child components based on application state. 
 
+* If `props.error` is truthy, we will render the `ErrorMessage` component with a reset prop equal to our `reset` action creator.
+* If `props.loading` is truthy, we will render an image with a `src` prop equal to `hourglass`. `hourglass` is an animated loading indicator.
+* If `props.search` is truthy, we will render the `EnterLocation` component.
+* If none of those are truthy, we will render the `CurrentWeather` component with a reset prop equal to our `reset` action creator and a weather prop equal to `weather` off of props.
+
 ### Instructions
 
-This step will take place in `src/App.js`. Once the project is complete the `App` component will conditionally render one of four components, let's break this out into a new method to keep `render` clean. Create a method `renderChildren` which takes no parameters. This method will look at application state to determine what to render:
+* Open `src/App.js`.
+* Create a method above the `render` method called `renderChildren`:
+  * This method should deconstruct `props` for simplified referencing.
+  * This method should selectively render a component based on the conditions specified in the summary.
+* Replace `<EnterLocation />` in the render method with the invocation of `renderChildren`. 
 
-* If `props.error` is truthy, return the `ErrorMessage` component, passing `props.reset` as a prop.
-* If `props.loading` is truthy return an image with a `src` prop of `hourglass`. `hourglass` is an animated loading indicator.
-* If `props.search` is truthy return the `EnterLocation` component
-* Otherwise, return the `CurrentWeather` component.
-
-In `render` replace the `EnterLocation` component with `{ this.renderChildren() }`. App should now display different components based on the user input. Try entering some valid and invalid locations to ensure everything is displaying as expected.
+### Solution
 
 <details>
 
-<summary><b>Code Solution</b></summary>
+<summary> <code> src/App.js </code> </summary>
 
 ```jsx
-// src/App.js
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -438,50 +444,46 @@ import EnterLocation from "./components/EnterLocation/EnterLocation";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
 class App extends Component {
-	renderChildren() {
-		const {
-			  error
-			, loading
-			, search
-			, weather
-			, reset
-		} = this.props;
+  renderChildren() {
+    const {
+      error,
+      loading,
+      search,
+      weather,
+      reset
+    } = this.props;
 
-		if ( error ) {
-			return <ErrorMessage reset={ reset } />;
-		}
+    if ( error ) {
+      return <ErrorMessage reset={ reset } />
+    }
 
-		if ( loading ) {
-			return (
-				<img
-					alt="loading indicator"
-					src={ hourglass }
-				/>
-			);
-		}
+    if ( loading ) {
+      return (
+        <img alt="loading indicator" src={ hourglass } />
+      )
+    }
 
-		if ( search ) {
-			return <EnterLocation />;
-		}
+    if ( search ) {
+      return <EnterLocation />
+    }
 
-		return (
-			<CurrentWeather />;
-		);
-	}
+    return (
+      <CurrentWeather reset={ reset } weather={ weather } />
+    )
+  }
 
-	render() {
-		return (
-			<div className="app">
-				<h1 className="app__title">WEATHERMAN</h1>
-				{ this.renderChildren() }
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="app">
+        <h1 className="app__title">WEATHERMAN</h1>
+        { this.renderChildren() }
+      </div>
+    );
+  }
 }
 
 export default connect( state => state, { reset } )( App );
 ```
-
 
 </details>
 

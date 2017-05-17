@@ -9,6 +9,9 @@ const initialState = {
 };
 
 export default function weather( state = initialState, action ) {
+
+  console.log('reducer hit', action);
+
   switch ( action.type ) {
     case RESET: 
       return initialState;

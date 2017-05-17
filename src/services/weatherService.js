@@ -17,4 +17,6 @@ export function getWeather( location ) {
 
     return formattedData;
   });
+
+  store.dispatch( setWeather( weatherPromise ) );
 }
