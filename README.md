@@ -287,10 +287,11 @@ In this step, we will fetch the weather data from `OpenWeatherMap`'s API and pla
 
 * Open `src/services/weatherService.js`.
 * Import `setWeather` from `src/ducks/weather.js`.
+* Import `axios` from `"axios"`.
 * Modify the `getWeather` function:
   * This function should create a variable named `weatherPromise` that should equal:
     * <details>
-      <summary> <code> weatherPromise </code>
+      <summary> <code> weatherPromise </code> </summary>
 
       ```js
       const weatherPromise = axios.get( buildUrl ).then(response => {
@@ -303,8 +304,10 @@ In this step, we will fetch the weather data from `OpenWeatherMap`'s API and pla
       });
       ```
       </details>
-
-Here we make a request to get some data, and use `.then` to run a callback function at some point in the future when the data comes back. In the callback function we log out the response to get an idea of what the data looks like by default, then we adjust it to match the structure we need using the `formatWeatherData` function from `src/utils/weatherUtils.js`, finally we return the data.
+* Open `src/components/EnterLocation/EnterLocation.js`.
+* Import `getWeather` from `src/services/weatherService.js`.
+* Modify the `handleSubmit` method:
+  * This method should call `getWeather` and pass in `this.state.location`.
 
 Now that we have our promise of data we can dispatch it to the middleware and reducer. Invoke `store.dispatch` passing `setWeather( weatherPromise )`. Let's pause and take a look at how the data will be flowing here.
 
