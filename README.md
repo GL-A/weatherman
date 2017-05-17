@@ -196,13 +196,38 @@ export default "API_KEY_HERE";
 
 ### Summary
 
-In this step, we will fetch the weather data from `OpenWeatherMap`'s API and place it on application state.
+In this step, we will update our `weatherUtils` file to handle constructing a URL that will be used to call the `OpenWeatherMap` API.
 
 ### Instructions
 
-Next, open up `src/utils/weatherUtils.js`. This file contains a handful of helper functions for formatting data. Go ahead and import `API_KEY` from `src/apiKey.js`. Create a new variable named `BASE_URL` and set it equal to the string `http://api.openweathermap.org/data/2.5/weather?APPID=${ API_KEY }&units=imperial&`. It's good practice to set up a base URL like this, now we don't have to worry about changing it in a dozen places if the URL ever changes!
+* Open `src/utils/weatherUtils.js`.
+* Import `API_KEY` from `src/apiKey.js`.
+* Create a variable called `BASE_URL` that equals:
+  * `http://api.openweathermap.org/data/2.5/weather?APPID=${ API_KEY }&units=imperial&`
+* Modify the `buildUrl` function at the bottom to do the following:
+  * This functions should check if `location` is a zip code using the `isZip` function.
+  * If `location` is a zip code return ```BASE_URL + `zip=${ location }` ```
+  * If `location` is not a zip code return ```BASE_URL + `q=${ location }` ```
 
-Near the bottom of the file there is an incomplete `buildUrl` function, let's update it to actually do things. We want users to be able to search by zip code or by city name but they require different URL's. Using the (rudimentary) `isZip` function check whether the `location` parameter is a zip code. If `location` is a zip code return ```BASE_URL + `zip=${ location }` ``` otherwise return ```BASE_URL + `q=${ location }` ```.
+### Solution
+
+<details>
+
+<summary> <code> src/utils/weatherUtils.js </code> </summary>
+
+```js
+
+```
+
+</details>
+
+## Step 5
+
+### Summary
+
+we will fetch the weather data from `OpenWeatherMap`'s API and place it on application state.
+
+### Instructions
 
 Now that we are ready to build a URL, open up `src/services/weatherService.js` and import `setWeather` from `src/ducks/weather.js`. Inside of the `getWeather` function create a variable named `weatherPromise` and set it equal to the following:
 
