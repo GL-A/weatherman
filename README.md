@@ -1,30 +1,32 @@
 <img src="https://devmounta.in/img/logowhiteblue.png" width="250" align="right">
 
-# Weatherman
+# Project Summary
 
 <img src="https://raw.githubusercontent.com/DevMountain/weatherman/master/readme-assets/solution.PNG"/>
 
-**Project Summary**
-
 In this project we'll be building a weather app that allows users to search for the current weather anywhere in the world. We'll make use of the [OpenWeatherMap](https://openweathermap.org/) API and [Redux Promise Middleware](https://github.com/pburtchaell/redux-promise-middleware) to accomplish this in a user friendly fashion.
 
-**Setup**
+## Setup
 
-Get started with the usual steps, as well as a new one:
+* Go to <a href="https://home.openweathermap.org/users/sign_up">OpenWeatherMap</a> and create an account. You'll need an API key to complete this project. The API key can take up to 10 minutes to activate.
+* `Fork` and `clone` this repository.
+* `cd` into the project directory.
+* Run `npm i` to install dependencies.
+* Run `npm start` to spin up the development server
 
-* Fork and clone this repository
-* `cd` into the project directory
-* `npm i` to install dependencies
-* `npm start` to spin up the development server
-* **Go to [OpenWeatherMap](https://home.openweathermap.org/users/sign_up) and create an account. You'll need an API key to complete this project.**
+## Step 1
 
-### Step 1
+### Summary
 
-**Summary**
+We will begin this project by installing new dependencies, customizing the store to handle promises, and adding new actions and handlers to the reducer.
 
-In this first step we will be installing new dependencies, customizing the store to handle promises, and adding new actions and handlers to the reducer.
+### Instructions
 
-**Detailed Instructions**
+* Run `npm install redux-promise-middleware axios`.
+* Open `src/store.js`.
+* Import `promiseMiddleware` from `redux-promise-middleware`.
+* Import `applyMiddleware` from `redux`.
+* 
 
 Begin by `npm install`ing the following dependencies:
 
