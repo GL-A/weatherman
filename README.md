@@ -65,18 +65,18 @@ In this step, we will add some actions to our reducer in `src/ducks/weather.js`.
 * Update the `reducer` to handle the `SET_WEATHER` action:
   * When the action type is `SET_WEATHER + "_PENDING"`:
     * Return a new object:
-    * <details>
-      <summary> <code> Object </code> </summary>
+      * <details>
+        <summary> <code> Object </code> </summary>
 
-      ```js
-      return {
-        error: false, 
-        loading: true,
-        search: false, 
-        weather: {}
-      };
-      ```
-      </details>
+        ```js
+        return {
+          error: false, 
+          loading: true,
+          search: false, 
+          weather: {}
+        };
+        ```
+        </details>
 
 
 The next `case` needs to check for `SET_WEATHER + "_FULFILLED"`, the type dispatched by the middleware when our promise succesfully completed. In this `case`, return an object that looks like this:
