@@ -27,7 +27,7 @@ We will begin this project by installing new dependencies and modifying the stor
 * Open `src/store.js`.
 * Import `promiseMiddleware` from `redux-promise-middleware`.
 * Import `applyMiddleware` from `redux`.
-* Modify the original `createStore` to have to additional parameters after `weather`:
+* Modify the original `createStore` to have two additional parameters after `weather`:
   * `undefined` - This could be an initial state, but since the reducer is handling that, let's just pass `undefined`.
   * `applyMiddleware( promiseMiddleware() )` - This will tell Redux that we want the middleware called on every action that is dispatched.
 
@@ -66,9 +66,7 @@ In this step, we will add some actions to our reducer in `src/ducks/weather.js`.
   * When the action type is `SET_WEATHER + "_PENDING"`:
     * Return a new object:
     * <details>
-
       <summary> <code> Object </code> </summary>
-
       ```js
       return {
         error: false, 
@@ -77,7 +75,6 @@ In this step, we will add some actions to our reducer in `src/ducks/weather.js`.
         weather: {}
       };
       ```
-
       </details>
 
 
