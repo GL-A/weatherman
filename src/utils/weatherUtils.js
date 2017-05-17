@@ -49,5 +49,9 @@ export function formatWeatherData( weatherData ) {
 }
 
 export function buildUrl( location ) {
+  if ( isZipCode( location ) ) {
+    return BASE_URL + `zip=${ location }`;
+  }
 
+  return BASE_URL + `q=${ location }`;
 }
