@@ -487,95 +487,22 @@ export default connect( state => state, { reset } )( App );
 
 </details>
 
-### Step 4
+## Step 7
 
-**Summary**
+### Summary
 
-In this step we will update `CurrentWeather` to display an icon and the actual weather information.
+In this step, we will update `CurrentWeather` to display an icon and the actual weather information.
 
-**Detailed Instructions**
+### Detailed Instructions
 
-Start this step in `src/App.js`. For `CurrentWeather` to work it needs data from the application state! In `renderChildren` pass `props.reset` and `props.weather` as props to `CurrentWeather`.
+* Open `src/components/CurrentWeather/CurrentWeather.js`.
+* Update the data passed in on the `weather` prop to replace the static data for location, icon, current temp, max temp, min temp, wind, and humidity.
 
-All that is left now is to open up `src/components/CurrentWeather/CurrentWeather.js` and make it dynamic! Update the static data for location, icon, current temp, max temp, min temp, wind, and humidity to take their data from props.
-
-You should now have a functioning weather app that handles asynchronous application state!
-
-<details>
-
-<summary><b>Code Solution</b></summary>
+### Solution
 
 <details>
 
-<summary><code>src/App.js</code></summary>
-
-```jsx
-import React, { Component } from "react";
-import { connect } from "react-redux";
-
-import "./App.css";
-
-import hourglass from "./assets/hourglass.svg";
-
-import { reset } from "./ducks/weather";
-
-import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
-import EnterLocation from "./components/EnterLocation/EnterLocation";
-import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-
-class App extends Component {
-	renderChildren() {
-		const {
-			  error
-			, loading
-			, search
-			, weather
-			, reset
-		} = this.props;
-
-		if ( error ) {
-			return <ErrorMessage reset={ reset } />
-		}
-
-		if ( loading ) {
-			return (
-				<img
-					alt="loading indicator"
-					src={ hourglass }
-				/>
-			);
-		}
-
-		if ( search ) {
-			return <EnterLocation />;
-		}
-
-		return (
-			<CurrentWeather
-				reset={ reset }
-				weather={ weather }
-			/>
-		);
-	}
-
-	render() {
-		return (
-			<div className="app">
-				<h1 className="app__title">WEATHERMAN</h1>
-				{ this.renderChildren() }
-			</div>
-		);
-	}
-}
-
-export default connect( state => state, { reset } )( App );
-```
-
-</details>
-
-<details>
-
-<summary><code>src/components/CurrentWeather/CurrentWeather.js</code></summary>
+<summary> <code> src/components/CurrentWeather/CurrentWeather.js </code> </summary>
 
 ```jsx
 import React, { PropTypes } from "react";
@@ -583,74 +510,69 @@ import React, { PropTypes } from "react";
 import "./CurrentWeather.css";
 
 export default function CurrentWeather( { weather, reset } ) {
-	const {
-		  currentTemperature
-		, humidity
-		, icon
-		, location
-		, maxTemperature
-		, minTemperature
-		, wind
-	} = weather;
+  const {
+    currentTemperature,
+    humidity,
+    icon,
+    location,
+    maxTemperature,
+    minTemperature,
+    wind
+  } = weather;
+  return (
+    <div className="current-weather">
+      <div className="current-weather__weather">
+        <h3 className="current-weather__location"> { location } </h3>
+        <img
+          alt="current weather icon"
+          className="current-weather__icon"
+          src={ icon }
+        />
+        <h3 className="current-weather__temp"> { currentTemperature }° </h3>
 
-	return (
-		<div className="current-weather">
-			<div className="current-weather__weather">
-				<h3 className="current-weather__location">{ location }</h3>
-				<img
-					alt="sunny"
-					className="current-weather__icon"
-					src={ icon }
-				/>
-				<h3 className="current-weather__temp">{ currentTemperature }°</h3>
+        <div className="current-weather__separator" />
 
-				<div className="current-weather__separator" />
+        <ul className="current-weather__stats">
+          <li className="current-weather__stat">Max: { maxTemperature }°</li>
+          <li className="current-weather__stat">Min: { minTemperature }°</li>
+          <li className="current-weather__stat">Wind: { wind } MPH</li>
+          <li className="current-weather__stat">Humidity: { humidity }%</li>
+        </ul>
+      </div>
+      <button
+        className="current-weather__search-again"
+        onClick={ reset }
+      >
+        Search Again
+      </button>
+    </div>
+  );
+  }
 
-				<ul className="current-weather__stats">
-					<li className="current-weather__stat">Max: { maxTemperature }°</li>
-					<li className="current-weather__stat">Min: { minTemperature }°</li>
-					<li className="current-weather__stat">Wind: { wind } MPH</li>
-					<li className="current-weather__stat">Humidity: { humidity }%</li>
-				</ul>
-			</div>
-			<button
-				className="current-weather__search-again"
-				onClick={ reset }
-			>
-				Search Again
-			</button>
-		</div>
-	);
-}
-
-CurrentWeather.propTypes = {
-	  reset: PropTypes.func.isRequired
-	, weather: PropTypes.shape( {
-		  icon: PropTypes.string.isRequired
-		, currentTemperature: PropTypes.number.isRequired
-		, maxTemperature: PropTypes.number.isRequired
-		, minTemperature: PropTypes.number.isRequired
-		, wind: PropTypes.number.isRequired
-		, humidity: PropTypes.number.isRequired
-	} ).isRequired
+  CurrentWeather.propTypes = {
+    reset: PropTypes.func.isRequired
+  , weather: PropTypes.shape( {
+      icon: PropTypes.string.isRequired
+    , currentTemperature: PropTypes.number.isRequired
+    , maxTemperature: PropTypes.number.isRequired
+    , minTemperature: PropTypes.number.isRequired
+    , wind: PropTypes.number.isRequired
+    , humidity: PropTypes.number.isRequired
+  } ).isRequired
 };
 ```
 
 </details>
 
-
-</details>
-
 ## Contributions
-
-### Contributions
 
 If you see a problem or a typo, please fork, make the necessary changes, and create a pull request so we can review your changes and merge them into the master repo and branch.
 
 ## Copyright
 
-### Copyright
-
 © DevMountain LLC, 2017. Unauthorized use and/or duplication of this material without express and written permission from DevMountain, LLC is strictly prohibited. Excerpts and links may be used, provided that full and clear credit is given to DevMountain with appropriate and specific direction to the original content.
 
+<p align="center">
 <img src="https://devmounta.in/img/logowhiteblue.png" width="250">
+</p>
+
