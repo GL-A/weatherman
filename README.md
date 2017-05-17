@@ -8,7 +8,8 @@ In this project we'll be building a weather app that allows users to search for 
 
 ## Setup
 
-* Go to <a href="https://home.openweathermap.org/users/sign_up">OpenWeatherMap</a> and create an account. You'll need an API key to complete this project. The API key can take up to 10 minutes to activate.
+* Go to <a href="https://home.openweathermap.org/users/sign_up">OpenWeatherMap</a> and create an account. You'll need an API key to complete this project. 
+  * The API key can take up to 10 minutes to activate.
 * `Fork` and `clone` this repository.
 * `cd` into the project directory.
 * Run `npm i` to install dependencies.
