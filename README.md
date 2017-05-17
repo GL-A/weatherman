@@ -203,7 +203,7 @@ In this step, we will update our `weatherUtils` file to handle constructing a UR
 * Open `src/utils/weatherUtils.js`.
 * Import `API_KEY` from `src/apiKey.js`.
 * Create a variable called `BASE_URL` that equals:
-  * ```http://api.openweathermap.org/data/2.5/weather?APPID=${ API_KEY }&units=imperial&` ```
+  * ``` `http://api.openweathermap.org/data/2.5/weather?APPID=${ API_KEY }&units=imperial&` ```
 * Modify the `buildUrl` function at the bottom to do the following:
   * This functions should check if `location` is a zip code using the `isZip` function.
   * If `location` is a zip code return ```BASE_URL + `zip=${ location }` ```
