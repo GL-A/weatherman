@@ -67,7 +67,7 @@ In this step, we will add some actions to our reducer in `src/ducks/weather.js`.
     * Return a new object:
     * <details>
       <summary> <code> Object </code> </summary>
-      
+
       ```js
       return {
         error: false, 
