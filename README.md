@@ -51,7 +51,7 @@ export default createStore( weather, undefined, applyMiddleware( promiseMiddlewa
 
 ### Summary
 
-In this step, we will add some actions to our reducer in `src/ducks/weather.js`.
+In this step, we will add an action for fetching weather data, and handle all possible outcomes in the reducer in `src/ducks/weather.js`.
 
 ### Instructions
 
