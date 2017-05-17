@@ -496,7 +496,7 @@ In this step, we will update `CurrentWeather` to display an icon and the actual 
 ### Detailed Instructions
 
 * Open `src/components/CurrentWeather/CurrentWeather.js`.
-* Update the data passed in on the `weather` prop to replace the static data for location, icon, current temp, max temp, min temp, wind, and humidity.
+* Using the `weather` prop object, replace the static data for location, icon, current temp, max temp, min temp, wind, and humidity.
 
 ### Solution
 
