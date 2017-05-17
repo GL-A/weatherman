@@ -2,8 +2,6 @@ import axios from "axios";
 import { setWeather } from '../ducks/weather';
 import store from "../store";
 
-import axios from 'axios';
-
 import {
   formatWeatherData,
   buildUrl
@@ -11,7 +9,7 @@ import {
 
 
 export function getWeather( location ) {
-  const weatherPromise = axios.get( buildUrl ).then(response => {
+  const weatherPromise = axios.get( buildUrl(location) ).then(response => {
     console.log( response );
 
     const formattedData = formatWeatherData( response.data );

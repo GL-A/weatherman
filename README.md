@@ -287,14 +287,13 @@ In this step, we will fetch the weather data from `OpenWeatherMap`'s API and pla
 
 * Open `src/services/weatherService.js`.
 * Import `setWeather` from `src/ducks/weather.js`.
-* Import `axios` from `"axios"`.
 * Modify the `getWeather` function:
   * This function should create a variable named `weatherPromise` that should equal:
     * <details>
       <summary> <code> weatherPromise </code> </summary>
 
       ```js
-      const weatherPromise = axios.get( buildUrl ).then(response => {
+      const weatherPromise = axios.get( buildUrl(location) ).then(response => {
         console.log( response );
 
         const formattedData = formatWeatherData( response.data );
@@ -309,126 +308,36 @@ In this step, we will fetch the weather data from `OpenWeatherMap`'s API and pla
 * Modify the `handleSubmit` method:
   * This method should call `getWeather` and pass in `this.state.location`.
 
-Now that we have our promise of data we can dispatch it to the middleware and reducer. Invoke `store.dispatch` passing `setWeather( weatherPromise )`. Let's pause and take a look at how the data will be flowing here.
+Try entering in a zip code or location in the interface and press submit. You should now see `console.logs` appear in the debugger console. Let's pause and take a look at how the data will be flowing here.
 
 <img src="https://raw.githubusercontent.com/DevMountain/weatherman/master/readme-assets/data-flow.png" />
 
-A user will enter their location via the `EnterLocation` component and we will call `getWeather`. `getWeather` makes a request to get some data and dispatches a `setWeather` action. The action is intercepted by the middleware which will instead dispatch an action type of `"SET_WEATHER_PENDING"`. After the data comes back from the API the middleware will dispatch either `SET_WEATHER_FULFILLED` or `SET_WEATHER_REJECTED` depending on whether the request was succesful.
-
-Lastly for this step we'll connect this functionality to the interface. Open up `src/components/EnterLocation/EnterLocation.js` and import `getWeather` from `src/services/weatherService.js`. Alter the `handleSubmit` method so that it calls `getWeather` passing in `this.state.location`.
-
-You should now be able to submit a location and see the `console.log`'s of the weather data!
+### Solution
 
 <details>
 
-<summary><b>Code Solution</b></summary>
+<summary> <code> src/services/weatherService.js </code> </summary>
 
-<details>
-
-<summary><code>src/apiKey.js</code></summary>
-
-```javascript
-export default "YOUR_API_KEY_HERE";
-```
-
-</details>
-
-<details>
-
-<summary><code>src/utils/weatherUtils</code></summary>
-
-```javascript
-
-import cloudy from "../assets/cloudy.svg";
-import partlyCloudy from "../assets/partly-cloudy.svg";
-import rainy from "../assets/rainy.svg";
-import snowy from "../assets/snowy.svg";
-import sunny from "../assets/sunny.svg";
-import unknownIcon from "../assets/unknown-icon.svg";
-
-import API_KEY from "../apiKey";
-
-const BASE_URL = `http://api.openweathermap.org/data/2.5/weather?APPID=${ API_KEY }&units=imperial&`;
-
-function isZipCode( location ) {
-	return !isNaN( parseInt( location ) );
-}
-
-function getWeatherIcon( conditionCode ) {
-	if ( conditionCode === 800 ) {
-		return sunny;
-	}
-
-	if ( conditionCode >= 200 && conditionCode < 600 ) {
-		return rainy;
-	}
-
-	if ( conditionCode >= 600 && conditionCode < 700 ) {
-		return snowy;
-	}
-
-	if ( conditionCode >= 801 && conditionCode <= 803 ) {
-		return partlyCloudy;
-	}
-
-	if ( conditionCode === 804 ) {
-		return cloudy;
-	}
-
-	return unknownIcon;
-}
-
-export function formatWeatherData( weatherData ) {
-	return {
-		  icon: getWeatherIcon( weatherData.weather[ 0 ].id )
-		, currentTemperature: weatherData.main.temp
-		, location: weatherData.name
-		, maxTemperature: weatherData.main.temp_max
-		, minTemperature: weatherData.main.temp_min
-		, humidity: weatherData.main.humidity
-		, wind: weatherData.wind.speed
-	};
-}
-
-export function buildUrl( location ) {
-	if ( isZipCode( location ) ) {
-		return BASE_URL + `zip=${ location }`;
-	}
-
-	return BASE_URL + `q=${ location }`;
-}
-
-```
-
-</details>
-
-<details>
-
-<summary><code>src/services/weatherService</code></summary>
-
-```javascript
+```js
 import axios from "axios";
-
+import { setWeather } from '../ducks/weather';
 import store from "../store";
 
 import {
-	  formatWeatherData
-	, buildUrl
+  formatWeatherData,
+  buildUrl
 } from "../utils/weatherUtils";
-import { setWeather } from "../ducks/weather";
+
 
 export function getWeather( location ) {
-	const weatherPromise = axios.get( buildUrl( location ) )
-		.then( response => {
-			console.log( response );
+  const weatherPromise = axios.get( buildUrl(location) ).then(response => {
+    console.log( response );
 
-			const formattedData = formatWeatherData( response.data );
-			console.log( formattedData );
+    const formattedData = formatWeatherData( response.data );
+    console.log( formattedData );
 
-			return formattedData;
-		} );
-
-	store.dispatch( setWeather( weatherPromise ) );
+    return formattedData;
+  });
 }
 ```
 
@@ -436,72 +345,69 @@ export function getWeather( location ) {
 
 <details>
 
-<summary><code>src/components/EnterLocation/EnterLocation.js</code></summary>
+<summary> <code> src/components/EnterLocation/EnterLocation.js </code> </summary>
 
 ```jsx
 import React, { Component } from "react";
+import { getWeather } from '../../services/weatherService';
 
 import "./EnterLocation.css";
 
-import { getWeather } from "../../services/weatherService";
-
 export default class EnterLocation extends Component {
-	constructor( props ) {
-		super( props );
+  constructor( props ) {
+    super( props );
 
-		this.state = { location: "" };
+    this.state = { location: "" };
 
-		this.handleChange = this.handleChange.bind( this );
-		this.handleSubmit = this.handleSubmit.bind( this );
-	}
+    this.handleChange = this.handleChange.bind( this );
+    this.handleSubmit = this.handleSubmit.bind( this );
+  }
 
-	handleChange( event ) {
-		this.setState( { location: event.target.value } );
-	}
+  handleChange( event ) {
+    this.setState( { location: event.target.value } );
+  }
 
-	handleSubmit( event ) {
-		event.preventDefault();
+  handleSubmit( event ) {
+    event.preventDefault();
 
-		getWeather( this.state.location );
+    getWeather( this.state.location );
 
-		this.setState( { location: "" } );
-	}
+    this.setState( { location: "" } );
+  }
 
-	render() {
-		return (
-			<form
-				className="enter-location"
-				onSubmit={ this.handleSubmit }
-			>
-				<input
-					className="enter-location__input"
-					onChange={ this.handleChange }
-					placeholder="London / 84601"
-					type="text"
-					value={ this.state.location }
-				/>
-				<button
-					className="enter-location__submit"
-				>
-					Submit
-				</button>
-			</form>
-		);
-	}
+  render() {
+    return (
+      <form
+        className="enter-location"
+        onSubmit={ this.handleSubmit }
+      >
+        <input
+          className="enter-location__input"
+          onChange={ this.handleChange }
+          placeholder="London / 84601"
+          type="text"
+          value={ this.state.location }
+        />
+        <button
+          className="enter-location__submit"
+        >
+          Submit
+        </button>
+      </form>
+    );
+  }
 }
 ```
 
 </details>
 
-</details>
+## Step 6
 
-### Step 3
+### Summary
 
-**Summary**
+In this step, we will be displaying all the different child components based on application state. 
 
-In this step we will be displaying all the different child components based on application state.
-
-**Detailed Instructions**
+### Instructions
 
 This step will take place in `src/App.js`. Once the project is complete the `App` component will conditionally render one of four components, let's break this out into a new method to keep `render` clean. Create a method `renderChildren` which takes no parameters. This method will look at application state to determine what to render:
 

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getWeather } from '../../services/weatherService';
 
 import "./EnterLocation.css";
 
@@ -18,6 +19,8 @@ export default class EnterLocation extends Component {
 
   handleSubmit( event ) {
     event.preventDefault();
+
+    getWeather( this.state.location );
 
     this.setState( { location: "" } );
   }
