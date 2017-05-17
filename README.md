@@ -172,13 +172,33 @@ export function setWeather( weatherPromise ) {
 
 ### Summary
 
-In this step, we will fetch the weather data and place it on application state.
+In this step, we will create a file that contains and exports our API Key from `OpenWeatherMap`.
 
 ### Instructions
 
 * Create a new file in `src` named `apiKey.js`.
 * In `src/apiKey.js` export default your API Key in a string.
   * You can locate your API Key <a href="https://home.openweathermap.org/api_keys">here</a> after you've signed up and logged in.
+
+### Solution
+
+<details>
+
+<summary> <code> src/apiKey.js </code> </summary>
+
+```js
+export default "API_KEY_HERE";
+```
+
+</details>
+
+## Step 4
+
+### Summary
+
+In this step, we will fetch the weather data from `OpenWeatherMap`'s API and place it on application state.
+
+### Instructions
 
 Next, open up `src/utils/weatherUtils.js`. This file contains a handful of helper functions for formatting data. Go ahead and import `API_KEY` from `src/apiKey.js`. Create a new variable named `BASE_URL` and set it equal to the string `http://api.openweathermap.org/data/2.5/weather?APPID=${ API_KEY }&units=imperial&`. It's good practice to set up a base URL like this, now we don't have to worry about changing it in a dozen places if the URL ever changes!
 
