@@ -64,44 +64,46 @@ In this step, we will add some actions to our reducer in `src/ducks/weather.js`.
     * `payload` - This should equal the promise we get as a parameter: `weatherPromise`.
 * Update the `reducer` to handle the `SET_WEATHER` action:
   * When the action type is `SET_WEATHER + "_PENDING"`:
-    * Return a new object:
-      * <details>
-        <summary> <code> Object </code> </summary>
+    * <details>
+      <summary> <code> Object </code> </summary>
 
-        ```js
-        return {
-          error: false, 
-          loading: true,
-          search: false, 
-          weather: {}
-        };
-        ```
-        </details>
+      ```js
+      return {
+        error: false, 
+        loading: true,
+        search: false, 
+        weather: {}
+      };
+      ```
+      </details>
+  * When the action type is `SET_WEATHER + "_FULFILLED"`:
+    * <details>
+      <summary> <code> Object </code> </summary>
 
+      ```js
+      return {
+        error: false, 
+        loading: false,
+        search: false,
+        weather: action.payload
+      };
+      ```
+      </details>
+  * When the action type is `SET_WEATHER + "_REJECTED"`:
+    * <details>
+      <summary> <code> Object </code> </summary>
 
-The next `case` needs to check for `SET_WEATHER + "_FULFILLED"`, the type dispatched by the middleware when our promise succesfully completed. In this `case`, return an object that looks like this:
+      ```js
+      return {
+        error: true,
+        loading: false,
+        search: false,
+        weather: {}
+      };
+      ```
+      </details>
 
-```javascript
-return {
-	  error: false // Fulfilled only fires on succesfull completion
-	, loading: false // We've now finished fetching the data
-	, search: false // We'll be displaying the weather data instead of the search box
-	, weather: action.payload // Once the promise completes the middleware will place the returned data onto `action.payload`
-};
-```
-
-The final `case` to check is `SET_WEATHER + "_REJECTED"`, rejected means something went wrong with the promise and we have an error instead of data.
-
-```javascript
-return {
-	  error: true
-	, loading: false
-	, search: false
-	, weather: {}
-};
-```
-
-That's it for this step! Next up we'll make use of our new actions.
+### Solution
 
 <details>
 
