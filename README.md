@@ -281,23 +281,28 @@ export function buildUrl( location ) {
 
 ### Summary
 
-we will fetch the weather data from `OpenWeatherMap`'s API and place it on application state.
+In this step, we will fetch the weather data from `OpenWeatherMap`'s API and place it on application state.
 
 ### Instructions
 
-Now that we are ready to build a URL, open up `src/services/weatherService.js` and import `setWeather` from `src/ducks/weather.js`. Inside of the `getWeather` function create a variable named `weatherPromise` and set it equal to the following:
+* Open `src/services/weatherService.js`.
+* Import `setWeather` from `src/ducks/weather.js`.
+* Modify the `getWeather` function:
+  * This function should create a variable named `weatherPromise` that should equal:
+    * <details>
+      <summary> <code> weatherPromise </code>
 
-```javascript
-const weatherPromise = axios.get( buildUrl )
-	.then( response => {
-		console.log( response );
+      ```js
+      const weatherPromise = axios.get( buildUrl ).then(response => {
+        console.log( response );
 
-		const formattedData = formatWeatherData( response.data );
-		console.log( formattedData );
+        const formattedData = formatWeatherData( response.data );
+        console.log( formattedData );
 
-		return formattedData;
-	} );
-```
+        return formattedData;
+      });
+      ```
+      </details>
 
 Here we make a request to get some data, and use `.then` to run a callback function at some point in the future when the data comes back. In the callback function we log out the response to get an idea of what the data looks like by default, then we adjust it to match the structure we need using the `formatWeatherData` function from `src/utils/weatherUtils.js`, finally we return the data.
 
