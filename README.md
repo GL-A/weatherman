@@ -19,7 +19,7 @@ In this project we'll be building a weather app that allows users to search for 
 
 ### Summary
 
-We will begin this project by installing new dependencies, customizing the store to handle promises, and adding new actions and handlers to the reducer.
+We will begin this project by installing new dependencies and modifying the store to handle promises.
 
 ### Instructions
 
@@ -27,30 +27,59 @@ We will begin this project by installing new dependencies, customizing the store
 * Open `src/store.js`.
 * Import `promiseMiddleware` from `redux-promise-middleware`.
 * Import `applyMiddleware` from `redux`.
-* 
+* Modify the original `createStore` to have to additional parameters after `weather`:
+  * `undefined` - This could be an initial state, but since the reducer is handling that, let's just pass `undefined`.
+  * `applyMiddleware( promiseMiddleware() )` - This will tell Redux that we want the middleware called on every action that is dispatched.
 
-Begin by `npm install`ing the following dependencies:
+### Solution
 
-* [`redux-promise-middleware`](https://github.com/pburtchaell/redux-promise-middleware) - A module that changes how redux handles promises.
-* [`axios`](https://github.com/mzabriskie/axios) - A module that allows us to make HTTP requests
+<details>
 
-Once those complete, open up `src/store.js` and import `promiseMiddleware` from Redux Promise Middleware and `applyMiddleware` from Redux. To let our `store` make use of this middleware we need to change how we call `createStore`. Pass two new arguments after the reducer:
+<summary> <code> src/store.js </code> </summary>
 
-* `undefined` - This could be an initial state, but we handle that in our reducer, so we aren't worried about it.
-* `applyMiddleware` - Invoke this, and pass `promiseMiddleware()` as the only argument. This will tell Redux that we want the middleware called on every action that is `dispatch`ed.
+```js
+import { createStore, applyMiddleware } from "redux";
+import promiseMiddleware from "redux-promise-middleware";
+import weather from "./ducks/weather";
 
-The store is set up! Let's go add some actions to our reducer in `src/ducks/weather.js`. First off create a new action type of `SET_WEATHER` at the top of the file. Now we need a corresponding action creator, create and export a  function `setWeather` which takes a single parameter `weatherPromise`. This function should return an object where `type` is `SET_WEATHER` and `payload` is `weatherPromise`.
-
-We need to update the reducer to handle the new action, but because Redux Promise Middleware adjusts the action `type` we have to do it a little differently than normal. The first `case` should check if `action.type` is equal to `SET_WEATHER + "_PENDING"`, the middleware will add `_PENDING` for us while we wait for the promise to resolve. When this `case` is true, return a new object that looks something like this:
-
-```javascript
-return {
-	  error: false // We can't have an error yet because we're still waiting on the promise
-	, loading: true // We're now waiting on data, so we should indicate to the user that something is loading
-	, search: false // The use has just entered their search, so we can hide the search box now
-	, weather: {} // This is where the data will live once it comes back to us
-};
+export default createStore( weather, undefined, applyMiddleware( promiseMiddleware() ) );
 ```
+
+</details>
+
+## Step 2
+
+### Summary
+
+In this step, we will add some actions to our reducer in `src/ducks/weather.js`.
+
+### Instructions
+
+* Open `src/ducks/weather.js`.
+* Create a new action type of `SET_WEATHER` that equals `"SET_WEATHER"`.
+* Create and export a new action creator called `setWeather`:
+  * This function should take a single parameter called `weatherPromise`.
+  * This function should `return` an object with two properties:
+    * `type` - This should equal our action type: `SET_WEATHER`.
+    * `payload` - This should equal the promise we get as a parameter: `weatherPromise`.
+* Update the `reducer` to handle the `SET_WEATHER` action:
+  * When the action type is `SET_WEATHER + "_PENDING"`:
+    * Return a new object:
+    * <details>
+
+      <summary> <code> Object </code> </summary>
+
+      ```js
+      return {
+        error: false, 
+        loading: true,
+        search: false, 
+        weather: {}
+      };
+      ```
+
+      </details>
+
 
 The next `case` needs to check for `SET_WEATHER + "_FULFILLED"`, the type dispatched by the middleware when our promise succesfully completed. In this `case`, return an object that looks like this:
 
